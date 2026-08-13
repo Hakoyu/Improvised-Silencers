@@ -1,0 +1,5 @@
+version=1
+title=Improvised Silencers
+description=Improvised Silencers
+tags=Build 42
+visibility=public

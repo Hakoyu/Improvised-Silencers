@@ -1,0 +1,6 @@
+{
+    "Tooltip_Silencer": "Reduces firearm noise radius by 80%% but slightly lowers range.",
+    "Tooltip_MetalPipeSilencer": "Reduces firearm noise radius by 60%% but slightly lowers range.",
+    "Tooltip_TorchSilencer": "Reduces firearm noise radius by 40%% but lowers range.",
+    "Tooltip_WaterBottleSilencer": "Reduces firearm noise radius by 20%% but lowers range."
+}

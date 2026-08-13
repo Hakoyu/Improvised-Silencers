@@ -1,0 +1,6 @@
+{
+    "Tooltip_Silencer": "Verringert den Geräuschradius der Schusswaffe um 80 %%, reduziert aber leicht die Reichweite.",
+    "Tooltip_MetalPipeSilencer": "Verringert den Geräuschradius der Schusswaffe um 60 %%, reduziert aber leicht die Reichweite.",
+    "Tooltip_TorchSilencer": "Verringert den Geräuschradius der Schusswaffe um 40 %%, reduziert aber die Reichweite.",
+    "Tooltip_WaterBottleSilencer": "Verringert den Geräuschradius der Schusswaffe um 20 %%, reduziert aber die Reichweite."
+}

@@ -1,0 +1,5 @@
+name=Improvised Silencers (Build 42.20 Compatibility)
+poster=poster.png
+id=ImprovisedSilencers
+description=Build 42.20 compatibility port of Maxwell218's Improvised Silencers. Adds four craftable suppressors with optional Guns of Marz and Vanilla Firearms Expansion compatibility.
+versionMin=42.20.0
