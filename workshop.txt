@@ -1,6 +1,6 @@
 version=1
 id=3782700625
-title=Improvised Silencers 
+title=Improvised Silencers
 description=中文:
 description=简易消音器
 description=
@@ -25,5 +25,5 @@ description=Configure whether broken silencers disappear immediately when they b
 description=
 description=Original mod:
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3779164273]Improvised Silencers - Build 42.20 Compatibility[/url]
-tags=Build 42
+tags=Build 42;Items
 visibility=public
