@@ -102,7 +102,13 @@ function ISILSilencerConfig.getDurability(fullType)
         return nil
     end
 
-    return math.floor(getSandboxNumber(suppressor.durabilityOption, suppressor.durability, 1.0, 10000.0) + 0.5)
+    return math.floor(getSandboxNumber(suppressor.durabilityOption, suppressor.durability, 0.0, 10000.0) + 0.5)
+end
+
+function ISILSilencerConfig.isInfiniteDurability(fullType)
+    local durability = ISILSilencerConfig.getDurability(fullType)
+
+    return durability ~= nil and durability <= 0
 end
 
 function ISILSilencerConfig.getEffects()
@@ -148,9 +154,14 @@ function ISILSilencerConfig.applyDurabilityModifiers()
         local durability = ISILSilencerConfig.getDurability(fullType)
 
         if scriptItem and durability then
-            scriptItem:DoParam("ConditionMax = " .. tostring(durability))
-            scriptItem:DoParam("ConditionLowerChanceOneIn = 1")
-            scriptItem:DoParam("UseDelta = " .. tostring(1 / durability))
+            if durability > 0 then
+                scriptItem:DoParam("ConditionMax = " .. tostring(durability))
+                scriptItem:DoParam("ConditionLowerChanceOneIn = 1")
+                scriptItem:DoParam("UseDelta = " .. tostring(1 / durability))
+            else
+                scriptItem:DoParam("ConditionMax = " .. tostring(suppressor.durability))
+                scriptItem:DoParam("UseDelta = 0")
+            end
             scriptItem:DoParam("UseWhileEquipped = false")
             scriptItem:DoParam("Tags = " .. suppressor.tags)
         end
@@ -162,8 +173,23 @@ function ISILSilencerConfig.applyItemDurability(item)
         return
     end
 
-    local durability = ISILSilencerConfig.getDurability(item:getFullType())
+    local fullType = item:getFullType()
+    local durability = ISILSilencerConfig.getDurability(fullType)
     if not durability then
+        return
+    end
+
+    if durability <= 0 then
+        local defaultDurability = suppressors[fullType].durability
+
+        if item.setConditionMax then
+            item:setConditionMax(defaultDurability)
+        end
+
+        if item.setCondition then
+            item:setCondition(defaultDurability)
+        end
+
         return
     end
 

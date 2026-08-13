@@ -9,6 +9,10 @@ local function damageSuppressor(weapon)
 
     ISILSilencerConfig.applyItemDurability(suppressor)
 
+    if ISILSilencerConfig.isInfiniteDurability(suppressor:getFullType()) then
+        return
+    end
+
     local condition = suppressor:getCondition()
     if condition <= 0 then
         return

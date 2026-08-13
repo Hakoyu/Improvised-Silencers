@@ -16,7 +16,7 @@ local function getWorkingSuppressor(weapon)
         return nil
     end
 
-    if canon.getCondition and canon:getCondition() <= 0 then
+    if canon.getCondition and canon:getCondition() <= 0 and not ISILSilencerConfig.isInfiniteDurability(canon:getFullType()) then
         return nil
     end
 
@@ -58,7 +58,7 @@ function ISILSilencerStats.apply(weapon, forceRestore)
     end
     local isOurSuppressor = canon and ISILSilencerConfig.isSuppressor(canon:getFullType())
     local effect = isOurSuppressor and ISILSilencerConfig.getEffect(canon:getFullType()) or nil
-    if effect and canon.getCondition and canon:getCondition() <= 0 then
+    if effect and canon.getCondition and canon:getCondition() <= 0 and not ISILSilencerConfig.isInfiniteDurability(canon:getFullType()) then
         effect = nil
     end
     local modData = weapon:getModData()
@@ -132,7 +132,7 @@ function ISILSilencerStats.applyLiveSound(weapon)
     end
     local isOurSuppressor = canon and ISILSilencerConfig.isSuppressor(canon:getFullType())
     local effect = isOurSuppressor and ISILSilencerConfig.getEffect(canon:getFullType()) or nil
-    if effect and canon.getCondition and canon:getCondition() <= 0 then
+    if effect and canon.getCondition and canon:getCondition() <= 0 and not ISILSilencerConfig.isInfiniteDurability(canon:getFullType()) then
         effect = nil
     end
     local modData = weapon:getModData()
