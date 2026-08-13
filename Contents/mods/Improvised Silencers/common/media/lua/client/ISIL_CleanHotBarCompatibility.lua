@@ -49,7 +49,7 @@ local function getSilencerConditionInfo(item)
         r, g, b, a = 0.9, 0.8, 0.3, 0.9
     end
 
-    return ratio, r, g, b, a
+    return ratio, r, g, b, a, condition, maxCondition
 end
 
 local function getAmmoBackgroundHeight()
@@ -86,28 +86,31 @@ local function drawSilencerConditionBar(hotbar, item, slotX, slotY, slotWidth, s
         return
     end
 
-    local ratio, r, g, b, a = getSilencerConditionInfo(item)
+    local ratio, r, g, b, a, condition, maxCondition = getSilencerConditionInfo(item)
     if not ratio then
         return
     end
 
-    local config = CHBConfig and CHBConfig.getConfig and CHBConfig.getConfig() or {}
-    local statusBarScale = config.statusBarHeightScale or 1.0
-    local minBarHeight = math.max(3, math.floor(slotHeight / 12))
-    local maxBarHeight = math.max(minBarHeight, math.floor(slotHeight / 6))
-    local scaleFactor = (statusBarScale - 1.0) / 2.0
-    local barHeight = math.floor(minBarHeight + (maxBarHeight - minBarHeight) * scaleFactor)
-    barHeight = math.max(3, barHeight)
-
     local ammoBgHeight = getAmmoBackgroundHeight()
+    local barHeight = ammoBgHeight
     local barMargin = 2
-    local barInset = math.max(3, math.floor(slotWidth * 0.08))
-    local barX = slotX + barInset
+    local barX = slotX + 1
     local barY = math.floor(slotY - ammoBgHeight - barMargin - barHeight)
-    local barWidth = math.max(1, slotWidth - barInset * 2)
+    local barWidth = math.max(1, slotWidth - 2)
 
-    CHBCommonUnit.drawThreeSliceBar(hotbar, barX, barY, barWidth, barHeight, barBackground.Left, barBackground.Middle, barBackground.Right, 0.65, 0.35, 0.35, 0.35)
+    CHBCommonUnit.drawThreeSliceBar(hotbar, barX, barY, barWidth, barHeight, barBackground.Left, barBackground.Middle, barBackground.Right, 0.85, 0.2, 0.2, 0.2)
     CHBCommonUnit.drawThreeSliceBarFill(hotbar, barX, barY, barWidth, barHeight, ratio, barFillTex.Left, barFillTex.Middle, barFillTex.Right, a, r, g, b)
+
+    local config = CHBConfig and CHBConfig.getConfig and CHBConfig.getConfig() or {}
+    local textScale = config.ammoTextScale or 0.8
+    local _, baseHeight = CHBCommonUnit.getTextureSize()
+    local scaledTextHeight = baseHeight * textScale * CHBCommonUnit.DEFAULT_SCALE_FACTOR
+
+    local text = tostring(condition)
+    local textWidth = CHBCommonUnit.measureTextWidth(text, textScale)
+    local textX = math.floor(barX + (barWidth - textWidth) / 2)
+    local textY = math.floor(barY + (barHeight - scaledTextHeight) / 2)
+    CHBCommonUnit.renderText(hotbar, text, textX, textY, textScale, 1.0, 1.0, 1.0, 1.0)
 end
 
 function ISILCleanHotBarCompatibility.patch()
