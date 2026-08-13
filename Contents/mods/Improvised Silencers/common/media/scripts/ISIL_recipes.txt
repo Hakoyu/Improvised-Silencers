@@ -30,7 +30,7 @@ module Base
         time = 500,
         Tags = AnySurfaceCraft,
         category = Metalworking,
-        SkillRequired = MetalWelding:1,
+        SkillRequired = MetalWelding:3,
         xpAward = MetalWelding:10,
         AllowBatchCraft = false,
         inputs

@@ -10,6 +10,7 @@ local suppressors = {
         soundReduction = 80.0,
         rangeReduction = 0.8,
         durability = 300,
+        tags = "base:hasmetal;base:showcondition",
         swingSound = "SilencedShot",
     },
     ["Base.MetalPipeSilencer"] = {
@@ -19,6 +20,7 @@ local suppressors = {
         soundReduction = 60.0,
         rangeReduction = 1.0,
         durability = 200,
+        tags = "base:hasmetal;base:showcondition",
         swingSound = "CraftedSuppressedShot",
     },
     ["Base.TorchSilencer"] = {
@@ -28,6 +30,7 @@ local suppressors = {
         soundReduction = 40.0,
         rangeReduction = 2.0,
         durability = 100,
+        tags = "base:hasmetal;base:showcondition",
         swingSound = "CraftedSuppressedShot",
     },
     ["Base.WaterBottleSilencer"] = {
@@ -37,6 +40,7 @@ local suppressors = {
         soundReduction = 20.0,
         rangeReduction = 2.0,
         durability = 50,
+        tags = "base:showcondition",
         swingSound = "CraftedSuppressedShot",
     },
 }
@@ -139,12 +143,16 @@ function ISILSilencerConfig.applyDurabilityModifiers()
         return
     end
 
-    for fullType, _ in pairs(suppressors) do
+    for fullType, suppressor in pairs(suppressors) do
         local scriptItem = scriptManager:getItem(fullType)
         local durability = ISILSilencerConfig.getDurability(fullType)
 
         if scriptItem and durability then
             scriptItem:DoParam("ConditionMax = " .. tostring(durability))
+            scriptItem:DoParam("ConditionLowerChanceOneIn = 1")
+            scriptItem:DoParam("UseDelta = " .. tostring(1 / durability))
+            scriptItem:DoParam("UseWhileEquipped = false")
+            scriptItem:DoParam("Tags = " .. suppressor.tags)
         end
     end
 end
@@ -175,6 +183,7 @@ function ISILSilencerConfig.applyItemDurability(item)
             item:setCondition(durability)
         end
     end
+
 end
 
 ISILSilencerConfig.suppressors = suppressors
