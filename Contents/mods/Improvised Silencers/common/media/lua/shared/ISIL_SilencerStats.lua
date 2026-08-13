@@ -86,6 +86,57 @@ function ISILSilencerStats.apply(weapon, forceRestore)
     end
 end
 
+-- Build 42 may refresh the equipped weapon instance back to its script defaults
+-- after the upgrade/equip hooks have already run.  When that happens the custom
+-- SwingSound can remain noticeable to the player, but the SoundRadius used by
+-- the world sound / zombie attraction system is no longer reduced.  Keep the
+-- live equipped instance in sync from the script defaults, like the working B42
+-- suppressor implementation in Project Anime Anniversary.
+function ISILSilencerStats.applyLiveSound(weapon)
+    if not weapon or not instanceof(weapon, "HandWeapon") or not weapon:isRanged() then
+        return
+    end
+
+    local scriptItem = weapon:getScriptItem()
+    if not scriptItem then
+        return
+    end
+
+    local canon = weapon:getWeaponPart("Canon")
+    local effect = canon and ISILSilencerConfig.getEffect(canon:getFullType()) or nil
+    local modData = weapon:getModData()
+    local wasApplied = modData and modData[appliedStateKey] == true
+
+    -- Do not touch other Canon attachments handled by other mods.
+    if canon and not effect then
+        return
+    end
+
+    local soundRadius = scriptItem:getSoundRadius()
+    local soundVolume = scriptItem:getSoundVolume()
+    local swingSound = scriptItem:getSwingSound()
+    local preserveWeaponSound = ISILVFEWeaponTypes and ISILVFEWeaponTypes[weapon:getFullType()]
+
+    if effect then
+        weapon:setSoundRadius(soundRadius * effect.soundRadius)
+        weapon:setSoundVolume(soundVolume * effect.soundVolume)
+        if not preserveWeaponSound then
+            weapon:setSwingSound(effect.swingSound)
+        end
+        weapon:setMuzzleFlashModelKey(nil)
+        if modData then
+            modData[appliedStateKey] = true
+        end
+    elseif wasApplied then
+        weapon:setSoundRadius(soundRadius)
+        weapon:setSoundVolume(soundVolume)
+        weapon:setSwingSound(swingSound)
+        if modData then
+            modData[appliedStateKey] = nil
+        end
+    end
+end
+
 local function reEquipWeapon(character, weapon)
     if not character or not weapon then
         return
@@ -103,7 +154,9 @@ function ISUpgradeWeapon:complete()
     local result = originalUpgradeComplete(self)
     ISILSilencerStats.apply(self.weapon)
     if self.character and self.weapon then
-        syncHandWeaponFields(self.character, self.weapon)
+        if syncHandWeaponFields then
+            syncHandWeaponFields(self.character, self.weapon)
+        end
     end
     if isOurSuppressor then
         reEquipWeapon(self.character, self.weapon)
@@ -118,7 +171,9 @@ function ISRemoveWeaponUpgrade:complete()
     local result = originalRemoveComplete(self)
     ISILSilencerStats.apply(self.weapon, isOurSuppressor)
     if self.character and self.weapon then
-        syncHandWeaponFields(self.character, self.weapon)
+        if syncHandWeaponFields then
+            syncHandWeaponFields(self.character, self.weapon)
+        end
     end
     if isOurSuppressor then
         reEquipWeapon(self.character, self.weapon)
