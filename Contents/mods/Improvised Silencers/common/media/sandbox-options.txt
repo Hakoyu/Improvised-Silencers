@@ -18,6 +18,15 @@ option ImprovisedSilencers.SilencerRangeReduction
     page = ImprovisedSilencers,
 }
 
+option ImprovisedSilencers.SilencerDurability
+{
+    type = integer,
+    min = 1,
+    max = 10000,
+    default = 300,
+    page = ImprovisedSilencers,
+}
+
 option ImprovisedSilencers.MetalPipeSilencerSoundReduction
 {
     type = double,
@@ -33,6 +42,15 @@ option ImprovisedSilencers.MetalPipeSilencerRangeReduction
     min = 0.0,
     max = 100.0,
     default = 1.0,
+    page = ImprovisedSilencers,
+}
+
+option ImprovisedSilencers.MetalPipeSilencerDurability
+{
+    type = integer,
+    min = 1,
+    max = 10000,
+    default = 200,
     page = ImprovisedSilencers,
 }
 
@@ -54,6 +72,15 @@ option ImprovisedSilencers.TorchSilencerRangeReduction
     page = ImprovisedSilencers,
 }
 
+option ImprovisedSilencers.TorchSilencerDurability
+{
+    type = integer,
+    min = 1,
+    max = 10000,
+    default = 100,
+    page = ImprovisedSilencers,
+}
+
 option ImprovisedSilencers.WaterBottleSilencerSoundReduction
 {
     type = double,
@@ -69,5 +96,14 @@ option ImprovisedSilencers.WaterBottleSilencerRangeReduction
     min = 0.0,
     max = 100.0,
     default = 2.0,
+    page = ImprovisedSilencers,
+}
+
+option ImprovisedSilencers.WaterBottleSilencerDurability
+{
+    type = integer,
+    min = 1,
+    max = 10000,
+    default = 50,
     page = ImprovisedSilencers,
 }

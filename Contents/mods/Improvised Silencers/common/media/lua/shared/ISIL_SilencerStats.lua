@@ -6,6 +6,23 @@ ISILSilencerStats = ISILSilencerStats or {}
 
 local appliedStateKey = "ISILSuppressorStatsApplied"
 
+local function getWorkingSuppressor(weapon)
+    if not weapon then
+        return nil
+    end
+
+    local canon = weapon:getWeaponPart("Canon")
+    if not canon or not ISILSilencerConfig.getEffect(canon:getFullType()) then
+        return nil
+    end
+
+    if canon.getCondition and canon:getCondition() <= 0 then
+        return nil
+    end
+
+    return canon
+end
+
 local function makeUnsuppressedCopy(weapon)
     local copy = instanceItem(weapon:getFullType())
     if not copy or not instanceof(copy, "HandWeapon") then
@@ -36,14 +53,21 @@ function ISILSilencerStats.apply(weapon, forceRestore)
     end
 
     local canon = weapon:getWeaponPart("Canon")
-    local effect = canon and ISILSilencerConfig.getEffect(canon:getFullType()) or nil
+    if canon then
+        ISILSilencerConfig.applyItemDurability(canon)
+    end
+    local isOurSuppressor = canon and ISILSilencerConfig.isSuppressor(canon:getFullType())
+    local effect = isOurSuppressor and ISILSilencerConfig.getEffect(canon:getFullType()) or nil
+    if effect and canon.getCondition and canon:getCondition() <= 0 then
+        effect = nil
+    end
     local modData = weapon:getModData()
     local wasApplied = modData and modData[appliedStateKey] == true
 
     -- Other mods may use the Canon slot and apply their own custom statistics.
     -- Never overwrite those values. This is especially important for native
     -- Guns of Marz suppressors, whose effects are managed by Gunworks.
-    if canon and not effect then
+    if canon and not isOurSuppressor then
         if modData then
             modData[appliedStateKey] = nil
         end
@@ -103,12 +127,19 @@ function ISILSilencerStats.applyLiveSound(weapon)
     end
 
     local canon = weapon:getWeaponPart("Canon")
-    local effect = canon and ISILSilencerConfig.getEffect(canon:getFullType()) or nil
+    if canon then
+        ISILSilencerConfig.applyItemDurability(canon)
+    end
+    local isOurSuppressor = canon and ISILSilencerConfig.isSuppressor(canon:getFullType())
+    local effect = isOurSuppressor and ISILSilencerConfig.getEffect(canon:getFullType()) or nil
+    if effect and canon.getCondition and canon:getCondition() <= 0 then
+        effect = nil
+    end
     local modData = weapon:getModData()
     local wasApplied = modData and modData[appliedStateKey] == true
 
     -- Do not touch other Canon attachments handled by other mods.
-    if canon and not effect then
+    if canon and not isOurSuppressor then
         return
     end
 
@@ -183,6 +214,10 @@ end
 
 local function onEquipPrimary(character, item)
     ISILSilencerStats.apply(item)
+end
+
+function ISILSilencerStats.getWorkingSuppressor(weapon)
+    return getWorkingSuppressor(weapon)
 end
 
 local function onGameStart()

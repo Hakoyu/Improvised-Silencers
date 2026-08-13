@@ -6,29 +6,37 @@ local suppressors = {
     ["Base.Silencer"] = {
         soundOption = "SilencerSoundReduction",
         rangeOption = "SilencerRangeReduction",
+        durabilityOption = "SilencerDurability",
         soundReduction = 80.0,
         rangeReduction = 0.8,
+        durability = 300,
         swingSound = "SilencedShot",
     },
     ["Base.MetalPipeSilencer"] = {
         soundOption = "MetalPipeSilencerSoundReduction",
         rangeOption = "MetalPipeSilencerRangeReduction",
+        durabilityOption = "MetalPipeSilencerDurability",
         soundReduction = 60.0,
         rangeReduction = 1.0,
+        durability = 200,
         swingSound = "CraftedSuppressedShot",
     },
     ["Base.TorchSilencer"] = {
         soundOption = "TorchSilencerSoundReduction",
         rangeOption = "TorchSilencerRangeReduction",
+        durabilityOption = "TorchSilencerDurability",
         soundReduction = 40.0,
         rangeReduction = 2.0,
+        durability = 100,
         swingSound = "CraftedSuppressedShot",
     },
     ["Base.WaterBottleSilencer"] = {
         soundOption = "WaterBottleSilencerSoundReduction",
         rangeOption = "WaterBottleSilencerRangeReduction",
+        durabilityOption = "WaterBottleSilencerDurability",
         soundReduction = 20.0,
         rangeReduction = 2.0,
+        durability = 50,
         swingSound = "CraftedSuppressedShot",
     },
 }
@@ -83,6 +91,16 @@ function ISILSilencerConfig.getEffect(fullType)
     }
 end
 
+function ISILSilencerConfig.getDurability(fullType)
+    local suppressor = suppressors[fullType]
+
+    if not suppressor then
+        return nil
+    end
+
+    return math.floor(getSandboxNumber(suppressor.durabilityOption, suppressor.durability, 1.0, 10000.0) + 0.5)
+end
+
 function ISILSilencerConfig.getEffects()
     local effects = {}
 
@@ -114,8 +132,54 @@ function ISILSilencerConfig.applyRangeModifiers()
     end
 end
 
+function ISILSilencerConfig.applyDurabilityModifiers()
+    local scriptManager = getScriptManager and getScriptManager() or ScriptManager and ScriptManager.instance or nil
+
+    if not scriptManager then
+        return
+    end
+
+    for fullType, _ in pairs(suppressors) do
+        local scriptItem = scriptManager:getItem(fullType)
+        local durability = ISILSilencerConfig.getDurability(fullType)
+
+        if scriptItem and durability then
+            scriptItem:DoParam("ConditionMax = " .. tostring(durability))
+        end
+    end
+end
+
+function ISILSilencerConfig.applyItemDurability(item)
+    if not item or not ISILSilencerConfig.isSuppressor(item:getFullType()) then
+        return
+    end
+
+    local durability = ISILSilencerConfig.getDurability(item:getFullType())
+    if not durability then
+        return
+    end
+
+    local currentCondition = item.getCondition and item:getCondition() or durability
+    local currentMax = item.getConditionMax and item:getConditionMax() or durability
+
+    if item.setConditionMax then
+        item:setConditionMax(durability)
+    end
+
+    if item.setCondition then
+        if currentCondition <= 0 then
+            item:setCondition(0)
+        elseif currentCondition >= currentMax then
+            item:setCondition(durability)
+        elseif currentCondition > durability then
+            item:setCondition(durability)
+        end
+    end
+end
+
 ISILSilencerConfig.suppressors = suppressors
 
 ISILSilencerConfig.applyRangeModifiers()
+ISILSilencerConfig.applyDurabilityModifiers()
 
 return ISILSilencerConfig
