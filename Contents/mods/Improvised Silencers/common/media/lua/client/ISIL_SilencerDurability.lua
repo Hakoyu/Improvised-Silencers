@@ -1,7 +1,43 @@
 require "ISIL_SilencerStats"
 require "ISIL_Config"
 
-local function damageSuppressor(weapon)
+local function reEquipWeapon(character, weapon)
+    if not character or not weapon then
+        return
+    end
+
+    character:setPrimaryHandItem(weapon)
+    character:setSecondaryHandItem(weapon:isTwoHandWeapon() and weapon or nil)
+    character:resetEquippedHandsModels()
+end
+
+local function removeBrokenSuppressor(character, weapon, suppressor)
+    if not weapon or not suppressor then
+        return false
+    end
+
+    if weapon.detachWeaponPart then
+        weapon:detachWeaponPart(suppressor)
+    elseif weapon.setWeaponPart then
+        weapon:setWeaponPart("Canon", nil)
+    else
+        return false
+    end
+
+    ISILSilencerStats.apply(weapon, true)
+
+    if character then
+        if syncHandWeaponFields then
+            syncHandWeaponFields(character, weapon)
+        end
+
+        reEquipWeapon(character, weapon)
+    end
+
+    return true
+end
+
+local function damageSuppressor(character, weapon)
     local suppressor = ISILSilencerStats.getWorkingSuppressor(weapon)
     if not suppressor or not suppressor.getCondition or not suppressor.setCondition then
         return
@@ -21,6 +57,10 @@ local function damageSuppressor(weapon)
     suppressor:setCondition(math.max(0, condition - 1))
 
     if suppressor:getCondition() <= 0 then
+        if not ISILSilencerConfig.keepBrokenSilencers() and removeBrokenSuppressor(character, weapon, suppressor) then
+            return
+        end
+
         ISILSilencerStats.apply(weapon, true)
     end
 end
@@ -30,7 +70,7 @@ local function onWeaponSwing(character, weapon)
         return
     end
 
-    damageSuppressor(weapon)
+    damageSuppressor(character, weapon)
 end
 
 Events.OnWeaponSwing.Add(onWeaponSwing)

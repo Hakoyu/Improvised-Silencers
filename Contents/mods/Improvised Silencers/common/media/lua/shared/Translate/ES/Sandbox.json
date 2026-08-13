@@ -1,5 +1,7 @@
 {
     "Sandbox_ImprovisedSilencers": "Improvised Silencers",
+    "Sandbox_KeepBrokenSilencers": "Conservar silenciadores rotos",
+    "Sandbox_KeepBrokenSilencers_tooltip": "Si está activado, los silenciadores permanecen instalados al llegar a 0 de durabilidad, pero ya no reducen el ruido. Si está desactivado, los silenciadores rotos desaparecen inmediatamente.",
     "Sandbox_SilencerSoundReduction": "Reducción de sonido del silenciador (%)",
     "Sandbox_SilencerRangeReduction": "Reducción de alcance del silenciador",
     "Sandbox_MetalPipeSilencerSoundReduction": "Reducción de sonido del silenciador de tubo metálico (%)",

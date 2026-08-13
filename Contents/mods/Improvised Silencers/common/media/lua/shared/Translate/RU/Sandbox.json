@@ -1,5 +1,7 @@
 {
     "Sandbox_ImprovisedSilencers": "Improvised Silencers",
+    "Sandbox_KeepBrokenSilencers": "Сохранять сломанные глушители",
+    "Sandbox_KeepBrokenSilencers_tooltip": "Если включено, глушители остаются установленными при 0 прочности, но больше не подавляют шум. Если отключено, сломанные глушители сразу исчезают.",
     "Sandbox_SilencerSoundReduction": "Снижение шума глушителя (%)",
     "Sandbox_SilencerRangeReduction": "Снижение дальности глушителя",
     "Sandbox_MetalPipeSilencerSoundReduction": "Снижение шума глушителя из металлической трубы (%)",

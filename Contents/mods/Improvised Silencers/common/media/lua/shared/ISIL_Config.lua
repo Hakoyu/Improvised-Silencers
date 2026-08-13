@@ -76,6 +76,33 @@ local function getSandboxNumber(optionName, defaultValue, min, max)
     return clamp(value, min, max)
 end
 
+local function getSandboxBoolean(optionName, defaultValue)
+    local sandboxOptions = getSandboxOptions()
+    local value = nil
+
+    if sandboxOptions then
+        value = sandboxOptions[optionName]
+    end
+
+    if value == nil then
+        return defaultValue
+    end
+
+    if value == true or value == "true" or value == 1 or value == "1" then
+        return true
+    end
+
+    if value == false or value == "false" or value == 0 or value == "0" then
+        return false
+    end
+
+    return defaultValue
+end
+
+function ISILSilencerConfig.keepBrokenSilencers()
+    return getSandboxBoolean("KeepBrokenSilencers", true)
+end
+
 function ISILSilencerConfig.getEffect(fullType)
     local suppressor = suppressors[fullType]
 

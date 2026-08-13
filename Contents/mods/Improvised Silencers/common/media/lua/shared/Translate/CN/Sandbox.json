@@ -1,5 +1,7 @@
 {
     "Sandbox_ImprovisedSilencers": "简易消音器",
+    "Sandbox_KeepBrokenSilencers": "保留破损的消音器",
+    "Sandbox_KeepBrokenSilencers_tooltip": "勾选时，消音器耐久耗尽后会保留在武器上但不再提供消音效果。未勾选时，耐久耗尽的消音器会直接消失。",
     "Sandbox_SilencerSoundReduction": "消音器声音降低量（%）",
     "Sandbox_SilencerSoundReduction_tooltip": "安装消音器时应用到声音半径和声音音量的降低百分比。0 表示不降低声音，100 表示无声。",
     "Sandbox_SilencerRangeReduction": "消音器射程降低量",

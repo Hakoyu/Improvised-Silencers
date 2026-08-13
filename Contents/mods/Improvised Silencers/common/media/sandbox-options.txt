@@ -1,5 +1,12 @@
 VERSION = 1,
 
+option ImprovisedSilencers.KeepBrokenSilencers
+{
+    type = boolean,
+    default = true,
+    page = ImprovisedSilencers,
+}
+
 option ImprovisedSilencers.SilencerSoundReduction
 {
     type = double,

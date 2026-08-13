@@ -1,5 +1,7 @@
 {
     "Sandbox_ImprovisedSilencers": "Improvised Silencers",
+    "Sandbox_KeepBrokenSilencers": "Keep broken silencers",
+    "Sandbox_KeepBrokenSilencers_tooltip": "When enabled, silencers stay attached after their durability reaches 0, but no longer suppress firearm noise. When disabled, broken silencers disappear immediately.",
     "Sandbox_SilencerSoundReduction": "Silencer sound reduction (%)",
     "Sandbox_SilencerSoundReduction_tooltip": "Percentage reduction applied to sound radius and sound volume when a Silencer is attached. 0 means no sound reduction; 100 means silent.",
     "Sandbox_SilencerRangeReduction": "Silencer range reduction",

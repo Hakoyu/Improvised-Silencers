@@ -1,5 +1,7 @@
 {
     "Sandbox_ImprovisedSilencers": "Improvised Silencers",
+    "Sandbox_KeepBrokenSilencers": "Defekte Schalldämpfer behalten",
+    "Sandbox_KeepBrokenSilencers_tooltip": "Wenn aktiviert, bleiben Schalldämpfer bei 0 Haltbarkeit montiert, dämpfen aber nicht mehr. Wenn deaktiviert, verschwinden defekte Schalldämpfer sofort.",
     "Sandbox_SilencerSoundReduction": "Schalldämpfer-Lärmreduzierung (%)",
     "Sandbox_SilencerSoundReduction_tooltip": "Prozentuale Reduzierung von Geräuschradius und Lautstärke, wenn ein Schalldämpfer montiert ist. 0 bedeutet keine Reduzierung, 100 bedeutet lautlos.",
     "Sandbox_SilencerRangeReduction": "Schalldämpfer-Reichweitenreduzierung",
