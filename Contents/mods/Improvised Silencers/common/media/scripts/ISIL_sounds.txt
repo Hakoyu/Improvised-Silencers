@@ -23,5 +23,17 @@ module Base
             volume = 0.6,
         }
     }
+
+    sound Damaged
+    {
+        category = Item,
+        maxInstancesPerEmitter = 1,
+        clip
+        {
+            file = media/sound/Damaged.ogg,
+            distanceMax = 10,
+            volume = 0.8,
+        }
+    }
 }
 

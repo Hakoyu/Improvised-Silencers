@@ -1,6 +1,16 @@
 require "ISIL_SilencerStats"
 require "ISIL_Config"
 
+local brokenSound = "Damaged"
+
+local function playBrokenSound(character)
+    if character and character.playSound then
+        character:playSound(brokenSound)
+    elseif getSoundManager then
+        getSoundManager():PlayWorldSound(brokenSound, false, 0, 0, 0, 10, 1.0, true)
+    end
+end
+
 local function reEquipWeapon(character, weapon)
     if not character or not weapon then
         return
@@ -57,6 +67,8 @@ local function damageSuppressor(character, weapon)
     suppressor:setCondition(math.max(0, condition - 1))
 
     if suppressor:getCondition() <= 0 then
+        playBrokenSound(character)
+
         if not ISILSilencerConfig.keepBrokenSilencers() and removeBrokenSuppressor(character, weapon, suppressor) then
             return
         end
