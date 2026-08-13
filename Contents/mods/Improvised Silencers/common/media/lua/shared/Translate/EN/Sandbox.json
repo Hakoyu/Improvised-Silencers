@@ -1,0 +1,19 @@
+{
+    "Sandbox_ImprovisedSilencers": "Improvised Silencers",
+    "Sandbox_SilencerSoundReduction": "Silencer sound reduction (%)",
+    "Sandbox_SilencerSoundReduction_tooltip": "Percentage reduction applied to sound radius and sound volume when a Silencer is attached. 0 means no sound reduction; 100 means silent.",
+    "Sandbox_SilencerRangeReduction": "Silencer range reduction",
+    "Sandbox_SilencerRangeReduction_tooltip": "Flat amount subtracted from maximum range when a Silencer is attached.",
+    "Sandbox_MetalPipeSilencerSoundReduction": "Metal pipe silencer sound reduction (%)",
+    "Sandbox_MetalPipeSilencerSoundReduction_tooltip": "Percentage reduction applied to sound radius and sound volume when a Metal Pipe Silencer is attached. 0 means no sound reduction; 100 means silent.",
+    "Sandbox_MetalPipeSilencerRangeReduction": "Metal pipe silencer range reduction",
+    "Sandbox_MetalPipeSilencerRangeReduction_tooltip": "Flat amount subtracted from maximum range when a Metal Pipe Silencer is attached.",
+    "Sandbox_TorchSilencerSoundReduction": "Hand torch silencer sound reduction (%)",
+    "Sandbox_TorchSilencerSoundReduction_tooltip": "Percentage reduction applied to sound radius and sound volume when a Hand Torch Silencer is attached. 0 means no sound reduction; 100 means silent.",
+    "Sandbox_TorchSilencerRangeReduction": "Hand torch silencer range reduction",
+    "Sandbox_TorchSilencerRangeReduction_tooltip": "Flat amount subtracted from maximum range when a Hand Torch Silencer is attached.",
+    "Sandbox_WaterBottleSilencerSoundReduction": "Water bottle silencer sound reduction (%)",
+    "Sandbox_WaterBottleSilencerSoundReduction_tooltip": "Percentage reduction applied to sound radius and sound volume when a Water Bottle Silencer is attached. 0 means no sound reduction; 100 means silent.",
+    "Sandbox_WaterBottleSilencerRangeReduction": "Water bottle silencer range reduction",
+    "Sandbox_WaterBottleSilencerRangeReduction_tooltip": "Flat amount subtracted from maximum range when a Water Bottle Silencer is attached."
+}

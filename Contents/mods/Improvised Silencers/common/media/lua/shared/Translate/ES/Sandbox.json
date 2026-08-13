@@ -1,0 +1,11 @@
+{
+    "Sandbox_ImprovisedSilencers": "Improvised Silencers",
+    "Sandbox_SilencerSoundReduction": "Reducción de sonido del silenciador (%)",
+    "Sandbox_SilencerRangeReduction": "Reducción de alcance del silenciador",
+    "Sandbox_MetalPipeSilencerSoundReduction": "Reducción de sonido del silenciador de tubo metálico (%)",
+    "Sandbox_MetalPipeSilencerRangeReduction": "Reducción de alcance del silenciador de tubo metálico",
+    "Sandbox_TorchSilencerSoundReduction": "Reducción de sonido del silenciador de linterna (%)",
+    "Sandbox_TorchSilencerRangeReduction": "Reducción de alcance del silenciador de linterna",
+    "Sandbox_WaterBottleSilencerSoundReduction": "Reducción de sonido del silenciador de botella de agua (%)",
+    "Sandbox_WaterBottleSilencerRangeReduction": "Reducción de alcance del silenciador de botella de agua"
+}

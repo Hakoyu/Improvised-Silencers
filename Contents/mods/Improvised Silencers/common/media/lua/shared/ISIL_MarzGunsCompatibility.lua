@@ -5,6 +5,8 @@
 -- GoM updates without hard-coding every weapon ID here. GoM shotguns use a
 -- model-level muzzle attachment instead, so they are discovered separately.
 
+require "ISIL_Config"
+
 local ISIL_MARZ_MODULE = "MarzGuns"
 
 local ISIL_MODEL_PARTS = {
@@ -54,28 +56,30 @@ local function ISIL_registerGunworksStats()
         "MuzzleFlashModelKey",
     })
 
+    local effects = ISILSilencerConfig.getEffects()
+
     customStats.RegisterMultipleParts({
         ["Base.Silencer"] = {
-            statsFactory.Multiply("SoundRadius", 0.20),
-            statsFactory.Multiply("SoundVolume", 0.30),
+            statsFactory.Multiply("SoundRadius", effects["Base.Silencer"].soundRadius),
+            statsFactory.Multiply("SoundVolume", effects["Base.Silencer"].soundVolume),
             statsFactory.Set("SwingSound", "SilencedShot"),
             statsFactory.Set("MuzzleFlashModelKey", nil),
         },
         ["Base.MetalPipeSilencer"] = {
-            statsFactory.Multiply("SoundRadius", 0.40),
-            statsFactory.Multiply("SoundVolume", 0.50),
+            statsFactory.Multiply("SoundRadius", effects["Base.MetalPipeSilencer"].soundRadius),
+            statsFactory.Multiply("SoundVolume", effects["Base.MetalPipeSilencer"].soundVolume),
             statsFactory.Set("SwingSound", "CraftedSuppressedShot"),
             statsFactory.Set("MuzzleFlashModelKey", nil),
         },
         ["Base.TorchSilencer"] = {
-            statsFactory.Multiply("SoundRadius", 0.60),
-            statsFactory.Multiply("SoundVolume", 0.70),
+            statsFactory.Multiply("SoundRadius", effects["Base.TorchSilencer"].soundRadius),
+            statsFactory.Multiply("SoundVolume", effects["Base.TorchSilencer"].soundVolume),
             statsFactory.Set("SwingSound", "CraftedSuppressedShot"),
             statsFactory.Set("MuzzleFlashModelKey", nil),
         },
         ["Base.WaterBottleSilencer"] = {
-            statsFactory.Multiply("SoundRadius", 0.80),
-            statsFactory.Multiply("SoundVolume", 0.80),
+            statsFactory.Multiply("SoundRadius", effects["Base.WaterBottleSilencer"].soundRadius),
+            statsFactory.Multiply("SoundVolume", effects["Base.WaterBottleSilencer"].soundVolume),
             statsFactory.Set("SwingSound", "CraftedSuppressedShot"),
             statsFactory.Set("MuzzleFlashModelKey", nil),
         },

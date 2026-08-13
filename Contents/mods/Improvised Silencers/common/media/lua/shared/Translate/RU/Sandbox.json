@@ -1,0 +1,11 @@
+{
+    "Sandbox_ImprovisedSilencers": "Improvised Silencers",
+    "Sandbox_SilencerSoundReduction": "Снижение шума глушителя (%)",
+    "Sandbox_SilencerRangeReduction": "Снижение дальности глушителя",
+    "Sandbox_MetalPipeSilencerSoundReduction": "Снижение шума глушителя из металлической трубы (%)",
+    "Sandbox_MetalPipeSilencerRangeReduction": "Снижение дальности глушителя из металлической трубы",
+    "Sandbox_TorchSilencerSoundReduction": "Снижение шума глушителя из фонаря (%)",
+    "Sandbox_TorchSilencerRangeReduction": "Снижение дальности глушителя из фонаря",
+    "Sandbox_WaterBottleSilencerSoundReduction": "Снижение шума глушителя из бутылки (%)",
+    "Sandbox_WaterBottleSilencerRangeReduction": "Снижение дальности глушителя из бутылки"
+}

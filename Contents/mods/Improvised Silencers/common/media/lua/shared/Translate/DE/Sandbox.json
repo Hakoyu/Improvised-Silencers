@@ -1,0 +1,13 @@
+{
+    "Sandbox_ImprovisedSilencers": "Improvised Silencers",
+    "Sandbox_SilencerSoundReduction": "Schalldämpfer-Lärmreduzierung (%)",
+    "Sandbox_SilencerSoundReduction_tooltip": "Prozentuale Reduzierung von Geräuschradius und Lautstärke, wenn ein Schalldämpfer montiert ist. 0 bedeutet keine Reduzierung, 100 bedeutet lautlos.",
+    "Sandbox_SilencerRangeReduction": "Schalldämpfer-Reichweitenreduzierung",
+    "Sandbox_SilencerRangeReduction_tooltip": "Fester Wert, der bei montiertem Schalldämpfer von der maximalen Reichweite abgezogen wird.",
+    "Sandbox_MetalPipeSilencerSoundReduction": "Metallrohr-Schalldämpfer-Lärmreduzierung (%)",
+    "Sandbox_MetalPipeSilencerRangeReduction": "Metallrohr-Schalldämpfer-Reichweitenreduzierung",
+    "Sandbox_TorchSilencerSoundReduction": "Taschenlampen-Schalldämpfer-Lärmreduzierung (%)",
+    "Sandbox_TorchSilencerRangeReduction": "Taschenlampen-Schalldämpfer-Reichweitenreduzierung",
+    "Sandbox_WaterBottleSilencerSoundReduction": "Wasserflaschen-Schalldämpfer-Lärmreduzierung (%)",
+    "Sandbox_WaterBottleSilencerRangeReduction": "Wasserflaschen-Schalldämpfer-Reichweitenreduzierung"
+}
