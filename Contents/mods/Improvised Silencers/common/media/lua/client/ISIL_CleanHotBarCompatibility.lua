@@ -40,7 +40,7 @@ local function getSilencerConditionInfo(item)
     ISILSilencerConfig.applyItemDurability(silencer)
 
     if ISILSilencerConfig.isInfiniteDurability(silencer:getFullType()) then
-        return 1, 0.3, 0.7, 0.3, 0.85, "∞", "∞"
+        return 1, 0.3, 0.7, 0.3, 0.85, "10001", "10001"
     end
 
     local condition = silencer:getCondition()
