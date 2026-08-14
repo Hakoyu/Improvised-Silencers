@@ -74,6 +74,41 @@ local function removeBrokenSuppressor(character, weapon, suppressor)
     return true
 end
 
+local function hasLoadedRoundToFire(weapon)
+    if not weapon or not instanceof(weapon, "HandWeapon") or not weapon:isRanged() then
+        return false
+    end
+
+    -- OnWeaponSwing is also fired by empty trigger pulls.  Only spend silencer
+    -- durability when the gun can actually fire a live round.
+    if weapon.isJammed and weapon:isJammed() then
+        return false
+    end
+
+    if weapon.haveChamber and weapon:haveChamber() then
+        if not weapon.isRoundChambered or not weapon:isRoundChambered() then
+            return false
+        end
+
+        if weapon.isSpentRoundChambered and weapon:isSpentRoundChambered() then
+            return false
+        end
+
+        return true
+    end
+
+    if weapon.getCurrentAmmoCount then
+        local ammoPerShot = weapon.getAmmoPerShoot and weapon:getAmmoPerShoot() or 1
+        if ammoPerShot < 1 then
+            ammoPerShot = 1
+        end
+
+        return weapon:getCurrentAmmoCount() >= ammoPerShot
+    end
+
+    return true
+end
+
 local function damageSuppressor(character, weapon)
     local suppressor = ISILSilencerStats.getWorkingSuppressor(weapon)
     if not suppressor or not suppressor.getCondition or not suppressor.setCondition then
@@ -130,6 +165,10 @@ end
 
 local function onWeaponSwing(character, weapon)
     if not character or not weapon or not instanceof(weapon, "HandWeapon") or not weapon:isRanged() then
+        return
+    end
+
+    if not hasLoadedRoundToFire(weapon) then
         return
     end
 
