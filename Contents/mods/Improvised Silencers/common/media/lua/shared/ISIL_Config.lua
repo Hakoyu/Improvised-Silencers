@@ -3,6 +3,9 @@ ISILSilencerConfig = ISILSilencerConfig or {}
 local sandboxModule = "ImprovisedSilencers"
 local minDurability = 1
 local infiniteDurability = 10001
+local durabilityCurrentKey = "ISILCurrentDurability"
+local durabilityMaxKey = "ISILMaxDurability"
+local durabilityFullTypeKey = "ISILDurabilityFullType"
 
 local suppressors = {
     ["Base.Silencer"] = {
@@ -208,7 +211,11 @@ function ISILSilencerConfig.syncItemConditionDisplay(item)
     end
 
     if item.setUsedDelta then
-        local condition = item.getCondition and item:getCondition() or durability
+        local modData = item.getModData and item:getModData() or nil
+        local condition = modData and tonumber(modData[durabilityCurrentKey]) or nil
+        if condition == nil then
+            condition = item.getCondition and item:getCondition() or durability
+        end
         item:setUsedDelta(clamp(condition / durability, 0, 1))
     end
 end
@@ -224,8 +231,87 @@ function ISILSilencerConfig.applyItemDurability(item)
         return
     end
 
+    local modData = item.getModData and item:getModData() or nil
+    local previousCurrent = modData and tonumber(modData[durabilityCurrentKey]) or nil
+    local previousMax = modData and tonumber(modData[durabilityMaxKey]) or nil
+    local previousFullType = modData and modData[durabilityFullTypeKey] or nil
     local currentCondition = item.getCondition and item:getCondition() or durability
     local currentMax = item.getConditionMax and item:getConditionMax() or durability
+
+    if modData and (previousCurrent == nil or previousMax == nil or previousFullType ~= fullType) then
+        if ISILSilencerConfig.isInfiniteDurability(fullType) then
+            previousCurrent = durability
+        elseif currentCondition <= 0 then
+            previousCurrent = 0
+        elseif currentCondition >= currentMax then
+            previousCurrent = durability
+        else
+            previousCurrent = math.floor(clamp(currentCondition / currentMax, 0, 1) * durability + 0.5)
+        end
+    elseif previousMax and previousMax > 0 and previousMax ~= durability and not ISILSilencerConfig.isInfiniteDurability(fullType) then
+        previousCurrent = math.floor(clamp(previousCurrent / previousMax, 0, 1) * durability + 0.5)
+    end
+
+    if modData then
+        modData[durabilityCurrentKey] = clamp(previousCurrent or durability, 0, durability)
+        modData[durabilityMaxKey] = durability
+        modData[durabilityFullTypeKey] = fullType
+    end
+
+    if item.setConditionMax then
+        item:setConditionMax(durability)
+    end
+
+    if item.setCondition then
+        local displayCondition = modData and tonumber(modData[durabilityCurrentKey]) or currentCondition
+        if ISILSilencerConfig.isInfiniteDurability(fullType) then
+            item:setCondition(durability)
+        elseif displayCondition <= 0 then
+            item:setCondition(0)
+        elseif item.getConditionMax then
+            item:setCondition(math.max(1, math.floor(clamp(displayCondition / durability, 0, 1) * item:getConditionMax() + 0.5)))
+        elseif displayCondition > currentMax then
+            item:setCondition(currentMax)
+        end
+    end
+
+    ISILSilencerConfig.syncItemConditionDisplay(item)
+end
+
+function ISILSilencerConfig.getItemDurability(item)
+    if not item or not item.getFullType or not ISILSilencerConfig.isSuppressor(item:getFullType()) then
+        return nil
+    end
+
+    ISILSilencerConfig.applyItemDurability(item)
+
+    local modData = item.getModData and item:getModData() or nil
+    if modData and modData[durabilityCurrentKey] ~= nil then
+        return tonumber(modData[durabilityCurrentKey]) or 0
+    end
+
+    return item.getCondition and item:getCondition() or ISILSilencerConfig.getDurability(item:getFullType())
+end
+
+function ISILSilencerConfig.setItemDurability(item, value)
+    if not item or not item.getFullType or not ISILSilencerConfig.isSuppressor(item:getFullType()) then
+        return
+    end
+
+    local fullType = item:getFullType()
+    local durability = ISILSilencerConfig.getDurability(fullType)
+    if not durability then
+        return
+    end
+
+    local modData = item.getModData and item:getModData() or nil
+    local newValue = clamp(math.floor((tonumber(value) or 0) + 0.5), 0, durability)
+
+    if modData then
+        modData[durabilityCurrentKey] = newValue
+        modData[durabilityMaxKey] = durability
+        modData[durabilityFullTypeKey] = fullType
+    end
 
     if item.setConditionMax then
         item:setConditionMax(durability)
@@ -234,16 +320,31 @@ function ISILSilencerConfig.applyItemDurability(item)
     if item.setCondition then
         if ISILSilencerConfig.isInfiniteDurability(fullType) then
             item:setCondition(durability)
-        elseif currentCondition <= 0 then
+        elseif newValue <= 0 then
             item:setCondition(0)
-        elseif currentCondition >= currentMax then
-            item:setCondition(durability)
-        elseif currentCondition > durability then
-            item:setCondition(durability)
+        elseif item.getConditionMax then
+            item:setCondition(math.max(1, math.floor(clamp(newValue / durability, 0, 1) * item:getConditionMax() + 0.5)))
+        else
+            item:setCondition(newValue)
         end
     end
 
     ISILSilencerConfig.syncItemConditionDisplay(item)
+end
+
+function ISILSilencerConfig.getItemMaxDurability(item)
+    if not item or not item.getFullType or not ISILSilencerConfig.isSuppressor(item:getFullType()) then
+        return nil
+    end
+
+    ISILSilencerConfig.applyItemDurability(item)
+
+    local modData = item.getModData and item:getModData() or nil
+    if modData and modData[durabilityMaxKey] ~= nil then
+        return tonumber(modData[durabilityMaxKey]) or ISILSilencerConfig.getDurability(item:getFullType())
+    end
+
+    return ISILSilencerConfig.getDurability(item:getFullType())
 end
 
 ISILSilencerConfig.suppressors = suppressors

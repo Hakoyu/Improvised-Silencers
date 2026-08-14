@@ -43,8 +43,8 @@ local function getSilencerConditionInfo(item)
         return 1, 0.3, 0.7, 0.3, 0.85, "10001", "10001"
     end
 
-    local condition = silencer:getCondition()
-    local maxCondition = silencer:getConditionMax()
+    local condition = ISILSilencerConfig.getItemDurability(silencer)
+    local maxCondition = ISILSilencerConfig.getItemMaxDurability(silencer)
     if not condition or not maxCondition or maxCondition <= 0 then
         return nil
     end

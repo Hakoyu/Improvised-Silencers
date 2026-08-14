@@ -21,7 +21,9 @@ local function getConditionText(item)
         return nil
     end
 
-    return getText("IGUI_ISIL_Silencer") .. ": " .. tostring(item:getCondition()) .. "/" .. tostring(item:getConditionMax())
+    local condition = ISILSilencerConfig.getItemDurability and ISILSilencerConfig.getItemDurability(item) or item:getCondition()
+    local maxCondition = ISILSilencerConfig.getItemMaxDurability and ISILSilencerConfig.getItemMaxDurability(item) or item:getConditionMax()
+    return getText("IGUI_ISIL_Silencer") .. ": " .. tostring(condition) .. "/" .. tostring(maxCondition)
 end
 
 local function drawSilencerCondition(self, item, y, xoff, yoff)
