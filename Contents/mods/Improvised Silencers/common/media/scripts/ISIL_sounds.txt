@@ -31,6 +31,7 @@ module Base
         {
             file = media/sound/Damaged.ogg,
             distanceMax = 10,
+            volume = 0.0,
         }
     }
 }
