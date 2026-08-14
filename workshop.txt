@@ -7,10 +7,13 @@ description=
 description=在原始 Mod 的基础上，将消音器消音效率、消音器射程降低量、消音器耐久均改为可配置沙盒选项。
 description=
 description=消音器耐久：
-description=消音器现在拥有耐久。设置为 0 时表示无限耐久。
-description=
+description=消音器现在拥有耐久。设置为 10001 时表示无限耐久。
 description=保留破损的消音器：
 description=可配置消音器破损时是否直接消失。
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3461263912]Clean HotBar[/url] 联动:
+description=能在枪械子弹上方显示消音器耐久。
+description=
+description=
 description=
 description=English:
 description=Improvised Silencers
@@ -22,6 +25,9 @@ description=Silencers now have durability. Set it to 10001 for infinite durabili
 description=
 description=Keep broken silencers:
 description=Configure whether broken silencers disappear immediately when they break.
+description=
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3461263912]Clean HotBar[/url] integration:
+description=Displays silencer durability above the weapon's ammo count.
 description=
 description=Original mod:
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3779164273]Improvised Silencers - Build 42.20 Compatibility[/url]
