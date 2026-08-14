@@ -5,13 +5,37 @@ local brokenSound = "Damaged"
 local commandModule = "ImprovisedSilencers"
 local damageSuppressorCommand = "DamageSuppressor"
 local suppressorBrokenCommand = "SuppressorBroken"
+local lastBrokenSoundTime = 0
+local brokenSoundCooldownMs = 750
 
 local function playBrokenSound(character)
-    if character and character.playSound then
+    -- Match the sound playback style used by Harks Horde Night Revamp's
+    -- RoundChange sound. In multiplayer, character:playSound() can be
+    -- unreliable for this client-only feedback sound, while PlaySound() plays
+    -- directly for the local client.
+    if getSoundManager then
+        getSoundManager():PlaySound(brokenSound, false, 0)
+    elseif character and character.playSound then
         character:playSound(brokenSound)
-    elseif getSoundManager then
-        getSoundManager():PlayWorldSound(brokenSound, false, 0, 0, 0, 10, 1.0, true)
     end
+end
+
+local function getNowMs()
+    if getTimestampMs then
+        return getTimestampMs()
+    end
+
+    return os.time() * 1000
+end
+
+local function playBrokenSoundOnce(character)
+    local now = getNowMs()
+    if now - lastBrokenSoundTime < brokenSoundCooldownMs then
+        return
+    end
+
+    lastBrokenSoundTime = now
+    playBrokenSound(character)
 end
 
 local function reEquipWeapon(character, weapon)
@@ -70,9 +94,7 @@ local function damageSuppressor(character, weapon)
     ISILSilencerConfig.setItemDurability(suppressor, math.max(0, condition - 1))
 
     if (ISILSilencerConfig.getItemDurability(suppressor) or suppressor:getCondition()) <= 0 then
-        if not isClient or not isClient() then
-            playBrokenSound(character)
-        end
+        playBrokenSoundOnce(character)
 
         if not ISILSilencerConfig.keepBrokenSilencers() and removeBrokenSuppressor(character, weapon, suppressor) then
             return
@@ -121,7 +143,7 @@ local function onServerCommand(module, command, args)
     end
 
     local player = getSpecificPlayer(0) or getPlayer()
-    playBrokenSound(player)
+    playBrokenSoundOnce(player)
 end
 
 Events.OnWeaponSwing.Add(onWeaponSwing)
