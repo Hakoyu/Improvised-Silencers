@@ -1,5 +1,6 @@
 name=Improvised Silencers
 poster=poster.png
 id=ImprovisedSilencers
-description=Build 42.20 compatibility port of Maxwell218's Improvised Silencers. Adds four craftable suppressors with optional Guns of Marz and Vanilla Firearms Expansion compatibility.
+description=添加了四种可制作的消音器，可配置的消音效率、射程降低量和消音器耐久；支持 Clean HotBar 显示消音器耐久。
+description=Adds four craftable improvised suppressors with configurable sound suppression efficiency, range reduction, and suppressor durability. Supports Clean HotBar display for suppressor durability.
 versionMin=42.20.0
