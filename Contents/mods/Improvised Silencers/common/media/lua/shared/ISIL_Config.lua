@@ -1,6 +1,8 @@
 ISILSilencerConfig = ISILSilencerConfig or {}
 
 local sandboxModule = "ImprovisedSilencers"
+local minDurability = 1
+local infiniteDurability = 10001
 
 local suppressors = {
     ["Base.Silencer"] = {
@@ -129,13 +131,13 @@ function ISILSilencerConfig.getDurability(fullType)
         return nil
     end
 
-    return math.floor(getSandboxNumber(suppressor.durabilityOption, suppressor.durability, 0.0, 10000.0) + 0.5)
+    return math.floor(getSandboxNumber(suppressor.durabilityOption, suppressor.durability, minDurability, infiniteDurability) + 0.5)
 end
 
 function ISILSilencerConfig.isInfiniteDurability(fullType)
     local durability = ISILSilencerConfig.getDurability(fullType)
 
-    return durability ~= nil and durability <= 0
+    return durability ~= nil and durability >= infiniteDurability
 end
 
 function ISILSilencerConfig.getEffects()
@@ -181,14 +183,9 @@ function ISILSilencerConfig.applyDurabilityModifiers()
         local durability = ISILSilencerConfig.getDurability(fullType)
 
         if scriptItem and durability then
-            if durability > 0 then
-                scriptItem:DoParam("ConditionMax = " .. tostring(durability))
-                scriptItem:DoParam("ConditionLowerChanceOneIn = 1")
-                scriptItem:DoParam("UseDelta = " .. tostring(1 / durability))
-            else
-                scriptItem:DoParam("ConditionMax = " .. tostring(suppressor.durability))
-                scriptItem:DoParam("UseDelta = 0")
-            end
+            scriptItem:DoParam("ConditionMax = " .. tostring(durability))
+            scriptItem:DoParam("ConditionLowerChanceOneIn = 1")
+            scriptItem:DoParam("UseDelta = " .. tostring(1 / durability))
             scriptItem:DoParam("UseWhileEquipped = false")
             scriptItem:DoParam("Tags = " .. suppressor.tags)
         end
@@ -203,18 +200,6 @@ function ISILSilencerConfig.syncItemConditionDisplay(item)
     local fullType = item:getFullType()
     local durability = ISILSilencerConfig.getDurability(fullType)
     if not durability then
-        return
-    end
-
-    if durability <= 0 then
-        if item.setUseDelta then
-            item:setUseDelta(0)
-        end
-
-        if item.setUsedDelta then
-            item:setUsedDelta(1)
-        end
-
         return
     end
 
@@ -239,22 +224,6 @@ function ISILSilencerConfig.applyItemDurability(item)
         return
     end
 
-    if durability <= 0 then
-        local defaultDurability = suppressors[fullType].durability
-
-        if item.setConditionMax then
-            item:setConditionMax(defaultDurability)
-        end
-
-        if item.setCondition then
-            item:setCondition(defaultDurability)
-        end
-
-        ISILSilencerConfig.syncItemConditionDisplay(item)
-
-        return
-    end
-
     local currentCondition = item.getCondition and item:getCondition() or durability
     local currentMax = item.getConditionMax and item:getConditionMax() or durability
 
@@ -263,7 +232,9 @@ function ISILSilencerConfig.applyItemDurability(item)
     end
 
     if item.setCondition then
-        if currentCondition <= 0 then
+        if ISILSilencerConfig.isInfiniteDurability(fullType) then
+            item:setCondition(durability)
+        elseif currentCondition <= 0 then
             item:setCondition(0)
         elseif currentCondition >= currentMax then
             item:setCondition(durability)

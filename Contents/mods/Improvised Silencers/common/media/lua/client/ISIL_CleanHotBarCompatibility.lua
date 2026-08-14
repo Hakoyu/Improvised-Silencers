@@ -29,11 +29,19 @@ end
 
 local function getSilencerConditionInfo(item)
     local silencer = getAttachedSilencer(item)
+    if not silencer then
+        return nil
+    end
+
     if not silencer or not silencer.getCondition or not silencer.getConditionMax then
         return nil
     end
 
     ISILSilencerConfig.applyItemDurability(silencer)
+
+    if ISILSilencerConfig.isInfiniteDurability(silencer:getFullType()) then
+        return 1, 0.3, 0.7, 0.3, 0.85, "∞", "∞"
+    end
 
     local condition = silencer:getCondition()
     local maxCondition = silencer:getConditionMax()
