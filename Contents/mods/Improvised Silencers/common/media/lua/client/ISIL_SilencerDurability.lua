@@ -65,6 +65,7 @@ local function damageSuppressor(character, weapon)
     end
 
     suppressor:setCondition(math.max(0, condition - 1))
+    ISILSilencerConfig.syncItemConditionDisplay(suppressor)
 
     if suppressor:getCondition() <= 0 then
         playBrokenSound(character)

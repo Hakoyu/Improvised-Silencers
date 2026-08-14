@@ -195,6 +195,39 @@ function ISILSilencerConfig.applyDurabilityModifiers()
     end
 end
 
+function ISILSilencerConfig.syncItemConditionDisplay(item)
+    if not item or not item.getFullType or not ISILSilencerConfig.isSuppressor(item:getFullType()) then
+        return
+    end
+
+    local fullType = item:getFullType()
+    local durability = ISILSilencerConfig.getDurability(fullType)
+    if not durability then
+        return
+    end
+
+    if durability <= 0 then
+        if item.setUseDelta then
+            item:setUseDelta(0)
+        end
+
+        if item.setUsedDelta then
+            item:setUsedDelta(1)
+        end
+
+        return
+    end
+
+    if item.setUseDelta then
+        item:setUseDelta(1 / durability)
+    end
+
+    if item.setUsedDelta then
+        local condition = item.getCondition and item:getCondition() or durability
+        item:setUsedDelta(clamp(condition / durability, 0, 1))
+    end
+end
+
 function ISILSilencerConfig.applyItemDurability(item)
     if not item or not ISILSilencerConfig.isSuppressor(item:getFullType()) then
         return
@@ -217,6 +250,8 @@ function ISILSilencerConfig.applyItemDurability(item)
             item:setCondition(defaultDurability)
         end
 
+        ISILSilencerConfig.syncItemConditionDisplay(item)
+
         return
     end
 
@@ -237,6 +272,7 @@ function ISILSilencerConfig.applyItemDurability(item)
         end
     end
 
+    ISILSilencerConfig.syncItemConditionDisplay(item)
 end
 
 ISILSilencerConfig.suppressors = suppressors
