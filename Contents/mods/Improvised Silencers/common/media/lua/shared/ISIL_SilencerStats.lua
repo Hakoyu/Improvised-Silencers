@@ -3,6 +3,50 @@ require "ISIL_Config"
 ISILSilencerStats = ISILSilencerStats or {}
 
 local appliedStateKey = "ISILSuppressorStatsApplied"
+local originalScriptSwingSounds = {}
+
+local function getScriptItem(weapon)
+    if weapon and weapon.getScriptItem then
+        return weapon:getScriptItem()
+    end
+
+    return nil
+end
+
+local function getScriptSwingSound(scriptItem)
+    if scriptItem and scriptItem.getSwingSound then
+        return scriptItem:getSwingSound()
+    end
+
+    return nil
+end
+
+local function rememberOriginalScriptSwingSound(weapon, scriptItem, fallback)
+    if not weapon or not weapon.getFullType then
+        return
+    end
+
+    local fullType = weapon:getFullType()
+    if not originalScriptSwingSounds[fullType] then
+        originalScriptSwingSounds[fullType] = getScriptSwingSound(scriptItem) or fallback
+    end
+end
+
+local function setScriptSwingSound(scriptItem, swingSound)
+    if scriptItem and scriptItem.DoParam and swingSound then
+        scriptItem:DoParam("SwingSound = " .. tostring(swingSound))
+    end
+end
+
+local function restoreScriptSwingSound(weapon, scriptItem, fallback)
+    if not weapon or not weapon.getFullType then
+        return fallback
+    end
+
+    local swingSound = originalScriptSwingSounds[weapon:getFullType()] or fallback
+    setScriptSwingSound(scriptItem, swingSound)
+    return swingSound
+end
 
 local function getWorkingSuppressor(weapon)
     if not weapon then
@@ -77,6 +121,7 @@ function ISILSilencerStats.apply(weapon, forceRestore)
     -- that was previously modified by this mod, or when one of our suppressors
     -- has just been removed.
     if not effect and not wasApplied and not forceRestore then
+        restoreScriptSwingSound(weapon, getScriptItem(weapon))
         return
     end
 
@@ -85,11 +130,13 @@ function ISILSilencerStats.apply(weapon, forceRestore)
         return
     end
 
-    local preserveWeaponSound = ISILVFEWeaponTypes and ISILVFEWeaponTypes[weapon:getFullType()]
+    local scriptItem = getScriptItem(weapon)
+    rememberOriginalScriptSwingSound(weapon, scriptItem, baseWeapon:getSwingSound())
 
     weapon:setSoundRadius(baseWeapon:getSoundRadius())
     weapon:setSoundVolume(baseWeapon:getSoundVolume())
     weapon:setMaxRange(baseWeapon:getMaxRange())
+    restoreScriptSwingSound(weapon, scriptItem, baseWeapon:getSwingSound())
     weapon:setSwingSound(baseWeapon:getSwingSound())
     weapon:setMuzzleFlashModelKey(baseWeapon:getMuzzleFlashModelKey())
 
@@ -97,9 +144,8 @@ function ISILSilencerStats.apply(weapon, forceRestore)
         weapon:setSoundRadius(baseWeapon:getSoundRadius() * effect.soundRadius)
         weapon:setSoundVolume(baseWeapon:getSoundVolume() * effect.soundVolume)
         weapon:setMaxRange(math.max(0.0, baseWeapon:getMaxRange() + effect.maxRangeModifier))
-        if not preserveWeaponSound then
-            weapon:setSwingSound(effect.swingSound)
-        end
+        setScriptSwingSound(scriptItem, effect.swingSound)
+        weapon:setSwingSound(effect.swingSound)
         weapon:setMuzzleFlashModelKey(nil)
         if modData then
             modData[appliedStateKey] = true
@@ -145,14 +191,13 @@ function ISILSilencerStats.applyLiveSound(weapon)
     local soundRadius = scriptItem:getSoundRadius()
     local soundVolume = scriptItem:getSoundVolume()
     local swingSound = scriptItem:getSwingSound()
-    local preserveWeaponSound = ISILVFEWeaponTypes and ISILVFEWeaponTypes[weapon:getFullType()]
+    rememberOriginalScriptSwingSound(weapon, scriptItem, swingSound)
 
     if effect then
         weapon:setSoundRadius(soundRadius * effect.soundRadius)
         weapon:setSoundVolume(soundVolume * effect.soundVolume)
-        if not preserveWeaponSound then
-            weapon:setSwingSound(effect.swingSound)
-        end
+        setScriptSwingSound(scriptItem, effect.swingSound)
+        weapon:setSwingSound(effect.swingSound)
         weapon:setMuzzleFlashModelKey(nil)
         if modData then
             modData[appliedStateKey] = true
@@ -160,10 +205,12 @@ function ISILSilencerStats.applyLiveSound(weapon)
     elseif wasApplied then
         weapon:setSoundRadius(soundRadius)
         weapon:setSoundVolume(soundVolume)
-        weapon:setSwingSound(swingSound)
+        weapon:setSwingSound(restoreScriptSwingSound(weapon, scriptItem, swingSound))
         if modData then
             modData[appliedStateKey] = nil
         end
+    else
+        restoreScriptSwingSound(weapon, scriptItem, swingSound)
     end
 end
 
