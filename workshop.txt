@@ -12,6 +12,11 @@ description=可配置消音器破损时是否直接从枪上消失, 否则你必
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3461263912]Clean HotBar[/url] 联动:
 description=能在枪械子弹上方显示消音器耐久。
 description=
+description=额外支持的Mod:
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3722134990]Guns of Marz[/url]: 自动兼容带有枪口连接槽的枪械。
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3761077099]Vanilla Firearms Expansion[/url]: 自动兼容所有枪械。
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3777364365]Project Anime周年纪念版[/url]: 自动兼容所有枪械。
+description=
 description=
 description=
 description=English:
@@ -24,6 +29,13 @@ description=Keep broken silencers:
 description=Configure whether broken silencers disappear directly from guns when they break; otherwise, you must manually remove the broken silencer.
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3461263912]Clean HotBar[/url] integration:
 description=Displays silencer durability above the weapon's ammo count.
+description=
+description=Additional supported mods:
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3722134990]Guns of Marz[/url]: Automatically supports firearms with muzzle attachment slots.
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3761077099]Vanilla Firearms Expansion[/url]: Automatically supports all firearms.
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3777364365]Project Anime Anniversary[/url]: Automatically supports all firearms.
+description=
+description=
 description=
 description=Original mod:
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3779164273]Improvised Silencers - Build 42.20 Compatibility[/url]
