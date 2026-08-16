@@ -1,0 +1,11 @@
+{
+    "Sandbox_ImprovisedSilencers": "Improvised Silencers",
+    "Sandbox_KeepBrokenSilencers": "Зберігати зламані глушники",
+    "Sandbox_KeepBrokenSilencers_tooltip": "Якщо увімкнено, глушники залишаються встановленими з 0 міцності, але більше не пригнічують шум. Якщо вимкнено, зламані глушники одразу зникають.",
+    "Sandbox_SilencerSoundReduction": "Зниження шуму глушника (%)",
+    "Sandbox_SilencerRangeReduction": "Зниження дальності глушника",
+    "Sandbox_MetalPipeSilencerSoundReduction": "Зниження шуму глушника з металевої труби (%)",
+    "Sandbox_MetalPipeSilencerRangeReduction": "Зниження дальності глушника з металевої труби",
+    "Sandbox_WaterBottleSilencerSoundReduction": "Зниження шуму глушника з пляшки (%)",
+    "Sandbox_WaterBottleSilencerRangeReduction": "Зниження дальності глушника з пляшки"
+}
