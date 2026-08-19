@@ -6,6 +6,28 @@ local infiniteDurability = 10001
 local durabilityCurrentKey = "ISILCurrentDurability"
 local durabilityMaxKey = "ISILMaxDurability"
 local durabilityFullTypeKey = "ISILDurabilityFullType"
+local vanillaFirearmMountOn = {
+    "Base.AssaultRifle",
+    "Base.AssaultRifle2",
+    "Base.DoubleBarrelShotgun",
+    "Base.DoubleBarrelShotgunSawnoff",
+    "Base.HuntingRifle",
+    "Base.Pistol",
+    "Base.Pistol2",
+    "Base.Pistol3",
+    "Base.Revolver",
+    "Base.Revolver_Long",
+    "Base.Revolver_Short",
+    "Base.Shotgun",
+    "Base.ShotgunSawnoff",
+    "Base.VarmintRifle",
+    "Base.JS14_Rifle",
+    "Base.JS3T_Shotgun",
+    "Base.L92_Carbine",
+    "Base.L94_Rifle",
+    "Base.MSR7T_Rifle",
+    "Base.TrapperCarbine",
+}
 
 local suppressors = {
     ["Base.Silencer"] = {
@@ -48,6 +70,22 @@ local suppressors = {
         tags = "base:showcondition",
         swingSound = "CraftedSuppressedShot",
     },
+    ["Base.PA_SuppressorSmall"] = {
+        soundReduction = 80.0,
+        rangeReduction = 0.0,
+        durability = infiniteDurability,
+        mountOn = vanillaFirearmMountOn,
+        tags = "base:hasmetal;base:showcondition",
+        swingSound = "SilencedShot",
+    },
+    ["Base.PA_SuppressorLarge"] = {
+        soundReduction = 80.0,
+        rangeReduction = 0.0,
+        durability = infiniteDurability,
+        mountOn = vanillaFirearmMountOn,
+        tags = "base:hasmetal;base:showcondition",
+        swingSound = "SilencedShot",
+    },
 }
 
 local function clamp(value, min, max)
@@ -71,6 +109,10 @@ local function getSandboxOptions()
 end
 
 local function getSandboxNumber(optionName, defaultValue, min, max)
+    if not optionName then
+        return clamp(defaultValue, min, max)
+    end
+
     local sandboxOptions = getSandboxOptions()
     local value = sandboxOptions and tonumber(sandboxOptions[optionName]) or nil
 
@@ -157,6 +199,47 @@ function ISILSilencerConfig.isSuppressor(fullType)
     return suppressors[fullType] ~= nil
 end
 
+local function createItem(fullType)
+    if not instanceItem then
+        return nil
+    end
+
+    local ok, item = pcall(instanceItem, fullType)
+    return ok and item or nil
+end
+
+local function appendMountOn(scriptItem, attachmentFullType, weaponTypes)
+    if not scriptItem or not attachmentFullType or not weaponTypes then
+        return
+    end
+
+    local combined = {}
+    local seen = {}
+    local attachment = createItem(attachmentFullType)
+    local currentMountOn = attachment and attachment.getMountOn and attachment:getMountOn() or nil
+
+    if currentMountOn then
+        for i = 0, currentMountOn:size() - 1 do
+            local fullType = currentMountOn:get(i)
+            if fullType and not seen[fullType] then
+                seen[fullType] = true
+                table.insert(combined, fullType)
+            end
+        end
+    end
+
+    for _, fullType in ipairs(weaponTypes) do
+        if fullType and not seen[fullType] then
+            seen[fullType] = true
+            table.insert(combined, fullType)
+        end
+    end
+
+    if #combined > 0 then
+        scriptItem:DoParam("MountOn = " .. table.concat(combined, ";"))
+    end
+end
+
 function ISILSilencerConfig.applyRangeModifiers()
     local scriptManager = getScriptManager and getScriptManager() or ScriptManager and ScriptManager.instance or nil
 
@@ -191,6 +274,7 @@ function ISILSilencerConfig.applyDurabilityModifiers()
             scriptItem:DoParam("UseDelta = " .. tostring(1 / durability))
             scriptItem:DoParam("UseWhileEquipped = false")
             scriptItem:DoParam("Tags = " .. suppressor.tags)
+            appendMountOn(scriptItem, fullType, suppressor.mountOn)
         end
     end
 end

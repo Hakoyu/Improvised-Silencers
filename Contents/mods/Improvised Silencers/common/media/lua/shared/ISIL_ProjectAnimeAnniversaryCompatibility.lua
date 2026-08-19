@@ -10,16 +10,20 @@ end
 
 local ISIL_PAA_MODEL_PARTS = {
     pistol = {
+        "ModelWeaponPart = Base.PA_SuppressorSmall Base.Silencer muzzle muzzle",
         "ModelWeaponPart = Base.Silencer Base.SilencerRifle muzzle muzzle",
         "ModelWeaponPart = Base.MetalPipeSilencer Base.MetalPipeSilencer muzzle muzzle",
         "ModelWeaponPart = Base.TorchSilencer Base.TorchSilencer muzzle muzzle",
         "ModelWeaponPart = Base.WaterBottleSilencer Base.WaterBottleSilencer muzzle muzzle",
     },
     shotgun = {
+        "ModelWeaponPart = Base.PA_SuppressorLarge Base.SilencerBig muzzle muzzle",
         "ModelWeaponPart = Base.Silencer Base.SilencerBig muzzle muzzle",
         "ModelWeaponPart = Base.MetalPipeSilencer Base.MetalPipeSilencerBig muzzle muzzle",
     },
     rifle = {
+        "ModelWeaponPart = Base.PA_SuppressorSmall Base.SilencerRifle muzzle muzzle",
+        "ModelWeaponPart = Base.PA_SuppressorLarge Base.SilencerRifle muzzle muzzle",
         "ModelWeaponPart = Base.Silencer Base.SilencerRifle muzzle muzzle",
         "ModelWeaponPart = Base.MetalPipeSilencer Base.MetalPipeSilencerRifle muzzle muzzle",
         "ModelWeaponPart = Base.TorchSilencer Base.TorchSilencerRifle muzzle muzzle",
@@ -111,6 +115,8 @@ for _, weaponData in ipairs(ISIL_PAA_WEAPONS) do
 end
 
 if #paaWeapons > 0 then
+    ISIL_PAA_appendMountOn("Base.PA_SuppressorSmall", paaNonShotguns)
+    ISIL_PAA_appendMountOn("Base.PA_SuppressorLarge", paaWeapons)
     ISIL_PAA_appendMountOn("Base.Silencer", paaWeapons)
     ISIL_PAA_appendMountOn("Base.MetalPipeSilencer", paaWeapons)
     ISIL_PAA_appendMountOn("Base.TorchSilencer", paaNonShotguns)

@@ -2,16 +2,22 @@ local modelTable = require "ISIL_ModelTable"
 
 local modelParts = {
     [0] = {
+        "ModelWeaponPart = Base.PA_SuppressorSmall Base.Silencer muzzle muzzle",
+        "ModelWeaponPart = Base.PA_SuppressorLarge Base.Silencer muzzle muzzle",
         "ModelWeaponPart = Base.Silencer Base.SilencerRifle muzzle muzzle",
         "ModelWeaponPart = Base.MetalPipeSilencer Base.MetalPipeSilencer muzzle muzzle",
         "ModelWeaponPart = Base.TorchSilencer Base.TorchSilencer muzzle muzzle",
         "ModelWeaponPart = Base.WaterBottleSilencer Base.WaterBottleSilencer muzzle muzzle",
     },
     [1] = {
+        "ModelWeaponPart = Base.PA_SuppressorSmall Base.SilencerRifle muzzle muzzle",
+        "ModelWeaponPart = Base.PA_SuppressorLarge Base.SilencerBig muzzle muzzle",
         "ModelWeaponPart = Base.Silencer Base.SilencerRifle muzzle muzzle",
         "ModelWeaponPart = Base.MetalPipeSilencer Base.MetalPipeSilencerRifle muzzle muzzle",
     },
     [2] = {
+        "ModelWeaponPart = Base.PA_SuppressorSmall Base.SilencerRifle muzzle muzzle",
+        "ModelWeaponPart = Base.PA_SuppressorLarge Base.SilencerRifle muzzle muzzle",
         "ModelWeaponPart = Base.Silencer Base.SilencerRifle muzzle muzzle",
         "ModelWeaponPart = Base.MetalPipeSilencer Base.MetalPipeSilencerRifle muzzle muzzle",
         "ModelWeaponPart = Base.TorchSilencer Base.TorchSilencerRifle muzzle muzzle",
