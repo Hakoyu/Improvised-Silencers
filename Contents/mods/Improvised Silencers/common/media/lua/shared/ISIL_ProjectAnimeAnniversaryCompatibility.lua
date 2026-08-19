@@ -33,12 +33,12 @@ local ISIL_PAA_MODEL_PARTS = {
 
 local ISIL_PAA_WEAPONS = {
     -- Project Anime Anniversary firearms with muzzle attachment points.
-    { fullType = "Base.PA_SMGC01s", family = "rifle", allowImprovised = true },
-    { fullType = "Base.PA_PistolC01p", family = "pistol", allowImprovised = true },
-    { fullType = "Base.PA_AssaultrifleC01r", family = "rifle", allowImprovised = true },
-    { fullType = "Base.PA_SMGC01sLilies", family = "rifle", allowImprovised = true },
-    { fullType = "Base.PA_ShotgunCSPhantom", family = "shotgun", allowImprovised = false },
-    { fullType = "Base.PA_RifleCSStalker", family = "rifle", allowImprovised = true },
+    { fullType = "Base.PA_SMGC01s", family = "rifle", allowImprovised = true, allowPASmall = true },
+    { fullType = "Base.PA_PistolC01p", family = "pistol", allowImprovised = true, allowPASmall = true },
+    { fullType = "Base.PA_AssaultrifleC01r", family = "rifle", allowImprovised = true, allowPASmall = true },
+    { fullType = "Base.PA_SMGC01sLilies", family = "rifle", allowImprovised = true, allowPASmall = true },
+    { fullType = "Base.PA_ShotgunCSPhantom", family = "shotgun", allowImprovised = false, allowPALarge = true },
+    { fullType = "Base.PA_RifleCSStalker", family = "rifle", allowImprovised = true, allowPALarge = true },
     { fullType = "Base.PA_CarbineH02c", family = "rifle", allowImprovised = true },
     { fullType = "Base.PA_PlasmaMachineGunH04m", family = "rifle", allowImprovised = true },
     { fullType = "Base.PA_PlasmaPistolH04p", family = "pistol", allowImprovised = true },
@@ -52,6 +52,10 @@ local function ISIL_PAA_createItem(fullType)
 end
 
 local function ISIL_PAA_appendMountOn(attachmentFullType, weaponTypes)
+    if not weaponTypes or #weaponTypes <= 0 then
+        return false
+    end
+
     local scriptItem = getScriptManager():getItem(attachmentFullType)
     local attachment = ISIL_PAA_createItem(attachmentFullType)
 
@@ -100,6 +104,8 @@ end
 
 local paaWeapons = {}
 local paaNonShotguns = {}
+local paaSmallSuppressorWeapons = {}
+local paaLargeSuppressorWeapons = {}
 
 for _, weaponData in ipairs(ISIL_PAA_WEAPONS) do
     local scriptItem = getScriptManager():getItem(weaponData.fullType)
@@ -111,12 +117,20 @@ for _, weaponData in ipairs(ISIL_PAA_WEAPONS) do
         if weaponData.allowImprovised then
             table.insert(paaNonShotguns, weaponData.fullType)
         end
+
+        if weaponData.allowPASmall then
+            table.insert(paaSmallSuppressorWeapons, weaponData.fullType)
+        end
+
+        if weaponData.allowPALarge then
+            table.insert(paaLargeSuppressorWeapons, weaponData.fullType)
+        end
     end
 end
 
 if #paaWeapons > 0 then
-    ISIL_PAA_appendMountOn("Base.PA_SuppressorSmall", paaNonShotguns)
-    ISIL_PAA_appendMountOn("Base.PA_SuppressorLarge", paaWeapons)
+    ISIL_PAA_appendMountOn("Base.PA_SuppressorSmall", paaSmallSuppressorWeapons)
+    ISIL_PAA_appendMountOn("Base.PA_SuppressorLarge", paaLargeSuppressorWeapons)
     ISIL_PAA_appendMountOn("Base.Silencer", paaWeapons)
     ISIL_PAA_appendMountOn("Base.MetalPipeSilencer", paaWeapons)
     ISIL_PAA_appendMountOn("Base.TorchSilencer", paaNonShotguns)

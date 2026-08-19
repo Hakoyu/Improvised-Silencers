@@ -6,18 +6,21 @@ local infiniteDurability = 10001
 local durabilityCurrentKey = "ISILCurrentDurability"
 local durabilityMaxKey = "ISILMaxDurability"
 local durabilityFullTypeKey = "ISILDurabilityFullType"
-local vanillaFirearmMountOn = {
+local vanillaSmallSuppressorMountOn = {
     "Base.AssaultRifle",
     "Base.AssaultRifle2",
-    "Base.DoubleBarrelShotgun",
-    "Base.DoubleBarrelShotgunSawnoff",
-    "Base.HuntingRifle",
     "Base.Pistol",
     "Base.Pistol2",
     "Base.Pistol3",
     "Base.Revolver",
     "Base.Revolver_Long",
     "Base.Revolver_Short",
+}
+
+local vanillaLargeSuppressorMountOn = {
+    "Base.DoubleBarrelShotgun",
+    "Base.DoubleBarrelShotgunSawnoff",
+    "Base.HuntingRifle",
     "Base.Shotgun",
     "Base.ShotgunSawnoff",
     "Base.VarmintRifle",
@@ -74,7 +77,7 @@ local suppressors = {
         soundReduction = 80.0,
         rangeReduction = 0.0,
         durability = infiniteDurability,
-        mountOn = vanillaFirearmMountOn,
+        mountOn = vanillaSmallSuppressorMountOn,
         tags = "base:hasmetal;base:showcondition",
         swingSound = "SilencedShot",
     },
@@ -82,7 +85,7 @@ local suppressors = {
         soundReduction = 80.0,
         rangeReduction = 0.0,
         durability = infiniteDurability,
-        mountOn = vanillaFirearmMountOn,
+        mountOn = vanillaLargeSuppressorMountOn,
         tags = "base:hasmetal;base:showcondition",
         swingSound = "SilencedShot",
     },
